@@ -136,3 +136,6 @@ Route::get('/findandupdate', function() {
     $post->save();
 });
 
+Route::get('/create', function() {
+    Post::create(['title'=>'The Create Method','content'=>'Wow, I am learning how to use eloquent to create using the create method']);
+});
