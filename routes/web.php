@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Post;
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,9 +30,9 @@ Route::get('/contact', function () {
     return "Hi, I am the contact page";
 });
 // Example of how to to use variables within a route
-Route::get('/post/{id}/{name}', function ($id,$name) {
-    return "This is post number " . $id . " for user: " .$name;
-});
+// Route::get('/post/{id}/{name}', function ($id,$name) {
+//     return "This is post number " . $id . " for user: " .$name;
+// });
 // Example of how to to use nicknames for our routes
 Route::get('/admin/posts/example', array('as'=>'admin.home', function() {
     $url = route('admin.home');
@@ -189,6 +190,15 @@ Route::get('/forcedelete', function() {
 
 /*  
 |--------------------------------------------------------------------------
-| CRUD Data with Eloquent - Object Relational Model
+| Eloquent Relationships for Databases
 |--------------------------------------------------------------------------
 */
+
+// One to One Relationship
+Route::get('/user/{id}/post', function($id) {    
+    return User::find(1)->post->content;
+});
+// inverse relationship - opposite, gost username based on the post id
+Route::get('/post/{id}/username', function($id) {
+    return Post::find($id)->user->name;
+});

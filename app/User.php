@@ -36,4 +36,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Goes to post and looks for column user_id automatically
+    public function post() {
+        return $this->hasOne('App\Post');
+    }
+
 }
