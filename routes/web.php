@@ -53,9 +53,15 @@ Route::get('/post/{id}/{name}/{magic}','PostsController@show_post');
 */
 
 Route::get('/insert',function() {
-    DB::insert('insert into posts(title, content) values(?,?)',['raw data','rahoahaohohs']);
+    DB::insert('insert into posts(title, content) values(?,?)',['The first title of our database','Random string of goopy text for that face']);
 
+    DB::insert('insert into posts(title, content) values(?,?)',['The Second title of our database','Random string of goopy text for that face']);
 
+    DB::insert('insert into posts(title, content) values(?,?)',['The Third title of our db','Random string of goopy text for that face']);
+
+    DB::insert('insert into posts(title, content) values(?,?)',['The fourth be with you','Random string of goopy text for that face']);
+
+    DB::insert('insert into posts(title, content) values(?,?)',['Cinco de titlo','Random string of goopy text for that face']);
 });
 
 Route::get('/read', function() {
@@ -114,7 +120,7 @@ Route::get('/findmore',function () {
 
 /*  
 |--------------------------------------------------------------------------
-| Inserting Data with Eloquent - Object Relational Model
+| CRUD Data with Eloquent - Object Relational Model
 |--------------------------------------------------------------------------
 */
 
@@ -139,3 +145,50 @@ Route::get('/findandupdate', function() {
 Route::get('/create', function() {
     Post::create(['title'=>'The Create Method','content'=>'Wow, I am learning how to use eloquent to create using the create method']);
 });
+
+Route::get('/update', function() {
+    Post::where('id',2)->where('is_admin',0)->update(['title'=>'Newest PHP title', 'content'=>'I love doing the code']);
+});
+
+// Two ways to delete using Eloquent!
+// First way:
+Route::get('/delete', function( ) {
+    $post = Post::find(10);
+    $post->delete();
+});
+// Second way:
+Route::get('delete2', function() {
+    Post::destroy([4,5]);
+    // Post::where('is_admin',0)->delete();
+});
+
+Route::get('/softdelete', function() {
+    Post::find(6)->delete();
+});
+
+Route::get('/readsoftdelete', function() {
+    // shows a blank page for the deleted item,
+    // to return the deleted post, try the second method
+    // --------------------
+    // $post = Post::find(6);
+    // return $post;
+    // --------------------
+    // Second method:
+    // $post = Post::withTrashed()->where('id',[6,7])->get();
+    $post = Post::onlyTrashed()->where('is_admin',0)->get();
+    return $post;
+});
+
+Route::get('/restore', function() {
+    Post::withTrashed()->where('is_admin',0)->restore();
+});
+
+Route::get('/forcedelete', function() {
+    Post::onlyTrashed()->where('is_admin',0)->forceDelete();
+});
+
+/*  
+|--------------------------------------------------------------------------
+| CRUD Data with Eloquent - Object Relational Model
+|--------------------------------------------------------------------------
+*/
